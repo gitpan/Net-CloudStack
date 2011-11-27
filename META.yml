@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Net-CloudStack
-version:            0.00001
+version:            0.00002
 abstract:           Bindings for the CloudStack API
 author:
     - Shugo Numano <numano@cc.rim.or.jp>

@@ -745,11 +745,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00001
+Version 0.00002
 
 =cut
 
-our $VERSION = '0.00001';
+our $VERSION = '0.00002';
 
 
 =head1 SYNOPSIS
@@ -780,18 +780,20 @@ our $VERSION = '0.00001';
     startVirtualMachine("id=$id")
     stopVirtualMachine("id=$id")
 
+Please refer B<API Reference> in following B<Developer's Guide:CloudStack>.
+
+
 =head1 AUTHOR
 
 Shugo Numano, C<< <numano at cc.rim.or.jp> >>
+
+@shugonumano
 
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-net-cloudstack at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Net-CloudStack>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
@@ -804,7 +806,7 @@ You can also look for information at:
 
 =over 5
 
-=item * CloudStack Developer's Guide
+=item * Developer's Guide:CloudStack
 
 L<http://docs.cloud.com/CloudStack_Documentation/Developer%27s_Guide%3A_CloudStack>
 
