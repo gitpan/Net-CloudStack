@@ -46,7 +46,7 @@ has 'secret_key' => (
 has 'url_response' => ( #1:gen_url,2:response,3:both
     is => 'rw',
     isa => 'CloudStack::Flag3',
-    default => 1,
+    default => 3,
     );
 
 has 'xml_json' => (
@@ -67,7 +67,6 @@ sub test{
 
     print "BASE URL:".$self->base_url."\n";
     print "API PATH:".$self->api_path."\n";
-#    print "COMMAND:".$cmd."\n";
     print "OPT:".$opt."\n";
     print "API KEY:".$self->api_key."\n";
     print "SECRET KEY:".$self->secret_key."\n";
@@ -745,11 +744,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00003
+Version 0.00004
 
 =cut
 
-our $VERSION = '0.00003';
+our $VERSION = '0.00004';
 
 
 =head1 SYNOPSIS

@@ -1,7 +1,11 @@
 Revision history for Net-CloudStack
 
-0.00001	 2011/11/26
-         First version, released on an unsuspecting world.
+0.00004  2011/11/29
+	 Changed the default value of url_response.
+0.00003	 2011/11/29
+         Fixed some bugs.
 0.00002	 2011/11/27
          revised pod.
+0.00001	 2011/11/26
+         First version, released on an unsuspecting world.
 
