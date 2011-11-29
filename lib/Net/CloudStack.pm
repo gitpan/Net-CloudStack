@@ -156,7 +156,7 @@ sub deleteTemplate{
     my @required = ("id");
     &output($self, $opt, \@required);
 }
-sub listTemplate{
+sub listTemplates{
     my ($self, $opt) = @_;
     my @required = ();
     &output($self, $opt, \@required);
@@ -328,7 +328,7 @@ sub listSnapshotPolicies{
 }
 
 ### Async job ###
-sub queryAsuncJobResult{
+sub queryAsyncJobResult{
     my ($self, $opt) = @_;
     my @required = ("jobid");
     &output($self, $opt, \@required);
@@ -424,7 +424,7 @@ sub listPortForwardingRules{
 }
 sub createPortForwardingRule{
     my ($self, $opt) = @_;
-    my @required = ("ipaddressid","privateport","protocol","publicport","virtualmachineid");
+    my @required = ("privateport","protocol","publicport","virtualmachineid");
     &output($self, $opt, \@required);
 }
 sub deletePortForwardingRule{
@@ -449,7 +449,7 @@ sub listFirewallRules{
 }
 
 ### NAT ###
-sub enableStaticNAT{
+sub enableStaticNat{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid","virtualmachineid");
     &output($self, $opt, \@required);
@@ -469,7 +469,7 @@ sub listIpForwardingRules{
     my @required = ();
     &output($self, $opt, \@required);
 }
-sub disableStaticNAT{
+sub disableStaticNat{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid");
     &output($self, $opt, \@required);
@@ -745,11 +745,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00002
+Version 0.00003
 
 =cut
 
-our $VERSION = '0.00002';
+our $VERSION = '0.00003';
 
 
 =head1 SYNOPSIS
