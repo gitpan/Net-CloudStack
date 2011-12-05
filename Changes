@@ -1,5 +1,8 @@
 Revision history for Net-CloudStack
 
+0.00005  2011/12/05
+	 Add properties(url,response,send_request).
+         Delete property(url_response).
 0.00004  2011/11/29
 	 Changed the default value of url_response.
 0.00003	 2011/11/29

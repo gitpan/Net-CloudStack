@@ -13,10 +13,10 @@ use URI::Encode;
 use JSON;
 use Carp;
 
-subtype 'CloudStack::Flag3'
-    => as 'Int'
-    => where { $_ >= 1 && $_ <= 3 }
-=> message { "Please input[1-3](1:gen_url,2:response,3:both)" }
+subtype 'CloudStack::YN'
+    => as 'Str'
+    => where { $_ =~ /^(yes|no)$/ }
+=> message { "Please input yes or no" }
 ;
 
 has 'base_url' => ( #http://localhost:8080
@@ -43,16 +43,26 @@ has 'secret_key' => (
     required => 1,
     );
 
-has 'url_response' => ( #1:gen_url,2:response,3:both
+has 'send_request' => (
     is => 'rw',
-    isa => 'CloudStack::Flag3',
-    default => 3,
+    isa => 'CloudStack::YN',
+    default => 'no',
     );
 
 has 'xml_json' => (
     is => 'rw',
     isa => 'Str',
     default => 'xml',
+    );
+
+has 'url' => (
+    is => 'rw',
+    isa => 'Str',
+    );
+
+has 'response' => (
+    is => 'rw',
+    isa => 'Str',
     );
 
 __PACKAGE__->meta->make_immutable;
@@ -70,10 +80,10 @@ sub test{
     print "OPT:".$opt."\n";
     print "API KEY:".$self->api_key."\n";
     print "SECRET KEY:".$self->secret_key."\n";
-    print "URL_RESPONSE:".$self->url_response."\n";
+    print "SEND_REQUEST:".$self->send_request."\n";
     print "XML_JSON:".$self->xml_json."\n";
 
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### COMMAND ###
@@ -81,583 +91,613 @@ sub test{
 sub deployVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("serviceofferingid", "templateid", "zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub destroyVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub rebootVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub startVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub stopVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub resetPasswordForVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub changeServiceForVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id","serviceofferingid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateVirtualMachine{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listVirtualMachines{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub getVMPassword{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Template ###
 sub createTemplate{
     my ($self, $opt) = @_;
     my @required = ("displaytext","name","ostypeid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub registerTemplate{
     my ($self, $opt) = @_;
     my @required = ("displaytext","format","hypervisor","name","ostypeid","url","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateTemplate{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub copyTemplate{
     my ($self, $opt) = @_;
     my @required = ("id","destzoneid","sourcezoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteTemplate{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listTemplates{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateTemplatePermissions{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listTemplatePermissions{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub extractTemplate{
     my ($self, $opt) = @_;
     my @required = ("id","mode","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### ISO ###
 sub attachIso{
     my ($self, $opt) = @_;
     my @required = ("id","virtualmachineid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub detachIso{
     my ($self, $opt) = @_;
     my @required = ("virtualmachineid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listIsos{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub registerIso{
     my ($self, $opt) = @_;
     my @required = ("displaytext","name","url","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateIso{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteIso{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub copyIso{
     my ($self, $opt) = @_;
     my @required = ("id","destzoneid","sourcezoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateIsoPermissions{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listIsoPermissions{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub extractIso{
     my ($self, $opt) = @_;
     my @required = ("id","mode","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Volume ###
 sub attachVolume{
     my ($self, $opt) = @_;
     my @required = ("id","virtualmachineid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub detachVolume{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createVolume{
     my ($self, $opt) = @_;
     my @required = ("name");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteVolume{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listVolumes{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub extractVolume{
     my ($self, $opt) = @_;
     my @required = ("id","mode","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Security Group ###
 sub createSecurityGroup{
     my ($self, $opt) = @_;
     my @required = ("name");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteSecurityGroup{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub authorizeSecurityGroupIngress{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub revokeSecurityGroupIngress{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listSecurityGroups{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Account ###
 sub listAccounts{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Snapshot ###
 sub createSnapshot{
     my ($self, $opt) = @_;
     my @required = ("volumeid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listSnapshots{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteSnapshot{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createSnapshotPolicy{
     my ($self, $opt) = @_;
     my @required = ("intervaltype","maxsnaps","schedule","timezone","volumeid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteSnapshotPolicies{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listSnapshotPolicies{
     my ($self, $opt) = @_;
     my @required = ("volumeid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Async job ###
 sub queryAsyncJobResult{
     my ($self, $opt) = @_;
     my @required = ("jobid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listAsyncJobs{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Event ###
 sub listEvents{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listEventTypes{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Guest OS ###
 sub listOsTypes{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listOsCategories{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Service Offering ###
 sub listServiceOfferings{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Disk Offering ###
 sub listDiskOfferings{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### SSH ###
 sub registerSSHKeyPair{
     my ($self, $opt) = @_;
     my @required = ("name","publickey");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createSSHKeyPair{
     my ($self, $opt) = @_;
     my @required = ("name");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteSSHKeyPair{
     my ($self, $opt) = @_;
     my @required = ("name");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listSSHKeyPairs{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Address ###
 sub associateIpAddress{
     my ($self, $opt) = @_;
     my @required = ("zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub disassociateIpAddress{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listPublicIpAddresses{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Firewall ###
 sub listPortForwardingRules{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createPortForwardingRule{
     my ($self, $opt) = @_;
     my @required = ("privateport","protocol","publicport","virtualmachineid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deletePortForwardingRule{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createFirewallRule{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid","protocol");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteFirewallRule{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listFirewallRules{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### NAT ###
 sub enableStaticNat{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid","virtualmachineid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub createIpForwardingRule{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid","protocol","startport");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteIpForwardingRule{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listIpForwardingRules{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub disableStaticNat{
     my ($self, $opt) = @_;
     my @required = ("ipaddressid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Load Balancer ###
 sub createLoadBalancerRule{
     my ($self, $opt) = @_;
     my @required = ("algorithm","name","privateport","publicport");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteLoadBalancerRule{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub removeFromLoadBalancerRule{
     my ($self, $opt) = @_;
     my @required = ("id","virtualmachineids");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub assignToLoadBalancerRule{
     my ($self, $opt) = @_;
     my @required = ("id","virtualmachineids");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listLoadBalancerRules{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listLoadBalancerRuleInstances{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateLoadBalancerRule{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### VM group ###
 sub createInstanceGroup{
     my ($self, $opt) = @_;
     my @required = ("name");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteInstanceGroup{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateInstanceGroup{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listInstanceGroups{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Network ###
 sub createNetwork{
     my ($self, $opt) = @_;
     my @required = ("displaytext","name","networkofferingid","zoneid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteNetwork{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listNetworks{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub restartNetwork{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub updateNetwork{
     my ($self, $opt) = @_;
     my @required = ("id");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### VPN ###
 sub createRemoteAccessVpn{
     my ($self, $opt) = @_;
     my @required = ("publicipid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub deleteRemoteAccessVpn{
     my ($self, $opt) = @_;
     my @required = ("publicipid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listRemoteAccessVpns{
     my ($self, $opt) = @_;
     my @required = ("publicipid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub addVpnUser{
     my ($self, $opt) = @_;
     my @required = ("password","username");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub remoteVpnUser{
     my ($self, $opt) = @_;
     my @required = ("username");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 sub listVpnUsers{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Hypervisors ###
 sub listHypervisors{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Zone ###
 sub listZones{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Network Offering ###
 sub listNetworkOfferings{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Configuration ###
 sub listCapabilities{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Limit ###
 sub listResourceLimits{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Cloud Identifier ###
 sub getCloudIdentifier{
     my ($self, $opt) = @_;
     my @required = ("userid");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Login ###
 sub login{
     my ($self, $opt) = @_;
     my @required = ("username","password");
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### Logout ###
 sub logout{
     my ($self, $opt) = @_;
     my @required = ();
-    &output($self, $opt, \@required);
+    $self->proc($opt, \@required);
 }
 
 ### SUB ROUTINE ###
+sub proc{
+    my ($self, $opt, $required) = @_;
+
+    if(!defined($opt)){
+        $opt = "";
+    }
+    else{
+        $opt =~ s/([\=\&])\s+/$1/g;
+        $opt =~ s/\s+([\=\&])/$1/g;
+    }
+
+    my $cmd = (caller 1)[3];
+    $cmd =~ s/.*:://;
+
+    foreach (@$required){
+        croak "$_ is required"  if(!defined($opt) || $opt !~ /[\s\&]*$_\s*\=/);
+    }
+
+    $self->gen_url($cmd, $opt);
+    if($self->send_request =~ /yes/i){
+	$self->gen_response;
+    }
+}
+
+
 sub gen_url{
-    my ($base_url, $api_path, $cmd, $opt, $api_key, $secret_key, $xml_json) = @_;
+    my ($self, $cmd, $opt) = @_;
+    my $base_url = $self->base_url;
+    my $api_path = $self->api_path;
+    my $api_key = $self->api_key;
+    my $secret_key = $self->secret_key;
+    my $xml_json = $self->xml_json;
     my $uri = URI::Encode->new();
 
 #step1
     if($opt){
         $cmd .= "&".$opt;
     }
-    if($xml_json =~ /json/){
+    if($xml_json =~ /json/i){
         $cmd .= "&response=json";
     }
     my $query = "command=".$cmd."&apiKey=".$api_key;
@@ -681,58 +721,31 @@ sub gen_url{
     my $base64_encoded = encode_base64($digest);chomp($base64_encoded);
     my $url_encoded = $uri->encode($base64_encoded, 1); # encode_reserved option is set to 1
     my $url = $base_url."/".$api_path."apikey=".$api_key."&command=".$cmd."&signature=".$url_encoded;
-    return $url;
+    $self->url("$url");
 }
 
-sub output{
-    my ($self, $opt, $required) = @_;
-
-    if(!defined($opt)){
-        $opt = "";
-    }
-    else{
-        $opt =~ s/([\=\&])\s+/$1/g;
-        $opt =~ s/\s+([\=\&])/$1/g;
-    }
-
-    my $cmd = (caller 1)[3];
-    $cmd =~ s/.*:://;
-
-	foreach (@$required){
-	    croak "$_ is required"  if(!defined($opt) || $opt !~ /[\s\&]*$_\s*\=/);
-	}
-
-	my $url = &gen_url($self->base_url, $self->api_path, $cmd, $opt, $self->api_key, $self->secret_key, $self->xml_json);
-	if($self->url_response == 1 || $self->url_response ==3){
-	    &print_url($url);
-	}
-	if($self->url_response == 2 || $self->url_response ==3){
-	    &print_response($url);
-	}
-    }
-
-sub print_url{
-    my ($url) = shift;
-    print "\nGenerate URL...\n".$url."\n\n";
-}
-
-sub print_response{
-    my ($url) = shift;
+sub gen_response{
+    my ($self) = shift;
     my $mech = WWW::Mechanize->new();
-    $mech->get($url);
+    $mech->get($self->url);
 
-    if($url =~ /response=json/){#json
+    #json
+    if($self->xml_json =~ /json/i){
         my $obj = from_json($mech->content);
         my $json = JSON->new->pretty(1)->encode($obj);
-        print $json;
+        $self->response("$json");
     }
+    
+    #xml
+    else{
+        my $parser = XML::Simple->new;
 
-    else{#XML
         my $xml = encode('utf8',$mech->content);#cp932 for Win
-	my $twig = XML::Twig->new(pretty_print => 'indented', );
+        my $twig = XML::Twig->new(pretty_print => 'indented', );
         $twig->parse($xml);
-        $twig->print;
 
+        my $response = $twig->sprint;
+        $self->response("$response");
     }
 }
 
@@ -744,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00004
+Version 0.00005
 
 =cut
 
-our $VERSION = '0.00004';
+our $VERSION = '0.00005';
 
 
 =head1 SYNOPSIS
@@ -759,9 +772,12 @@ our $VERSION = '0.00004';
         api_path        => 'client/api?',
         api_key         => '<your api key>',
         secret_key      => '<your secret key>',
-        url_response    => 3,
+        xml_json        => 'json',    #json or xml.xml is default.
+        send_request    => 'yes',      #yes or no.When you input yes,you can get json or xml as response.
     );
     $api->listVirtualMachines();
+    print $api->url;
+    print $api->response;
 
 =head1 METHODS
 
