@@ -2,11 +2,11 @@ package Net::CloudStack;
 
 use 5.006;
 
-use Moose;
-use Moose::Util::TypeConstraints;
+use Mouse;
+use Mouse::Util::TypeConstraints;
 use Digest::SHA qw(hmac_sha1);
 use MIME::Base64;
-use WWW::Mechanize;
+use LWP::UserAgent;
 use Encode;
 use XML::Twig;
 use URI::Encode;
@@ -66,8 +66,8 @@ has 'response' => (
     );
 
 __PACKAGE__->meta->make_immutable;
-no Moose;
-no Moose::Util::TypeConstraints;
+no Mouse;
+no Mouse::Util::TypeConstraints;
 
 ### FOR TEST ###
 
@@ -726,12 +726,12 @@ sub gen_url{
 
 sub gen_response{
     my ($self) = shift;
-    my $mech = WWW::Mechanize->new();
-    $mech->get($self->url);
+    my $ua = LWP::UserAgent->new();
+    $ua->get($self->url);
 
     #json
     if($self->xml_json =~ /json/i){
-        my $obj = from_json($mech->content);
+        my $obj = from_json($ua->content);
         my $json = JSON->new->pretty(1)->encode($obj);
         $self->response("$json");
     }
@@ -740,7 +740,7 @@ sub gen_response{
     else{
         my $parser = XML::Simple->new;
 
-        my $xml = encode('utf8',$mech->content);#cp932 for Win
+        my $xml = encode('utf8',$ua->content);#cp932 for Win
         my $twig = XML::Twig->new(pretty_print => 'indented', );
         $twig->parse($xml);
 
@@ -757,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00005
+Version 0.00006
 
 =cut
 
-our $VERSION = '0.00005';
+our $VERSION = '0.00006';
 
 
 =head1 SYNOPSIS

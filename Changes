@@ -1,5 +1,9 @@
 Revision history for Net-CloudStack
 
+0.00006  2011/12/19
+         Change Module
+         -from Moose to Mouse
+         -from WWW::Mechanize to LWP::UserAgent
 0.00005  2011/12/05
 	 Add properties(url,response,send_request).
          Delete property(url_response).
