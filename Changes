@@ -1,5 +1,7 @@
 Revision history for Net-CloudStack
 
+0.00007  2011/12/20
+         Fixed bugs.
 0.00006  2011/12/19
          Change Module
          -from Moose to Mouse
