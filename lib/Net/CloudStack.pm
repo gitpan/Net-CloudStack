@@ -433,7 +433,7 @@ sub listPortForwardingRules{
 }
 sub createPortForwardingRule{
     my ($self, $opt) = @_;
-    my @required = ("privateport","protocol","publicport","virtualmachineid");
+    my @required = ("ipaddressid","privateport","protocol","publicport","virtualmachineid");
     $self->proc($opt, \@required);
 }
 sub deletePortForwardingRule{
@@ -757,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00007
+Version 0.00008
 
 =cut
 
-our $VERSION = '0.00007';
+our $VERSION = '0.00008';
 
 
 =head1 SYNOPSIS

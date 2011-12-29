@@ -31,4 +31,4 @@ requires:
   URI::Encode: 0
   XML::Simple: 0
   XML::Twig: 0
-version: 0.00007
+version: 0.00008
