@@ -757,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00008
+Version 0.00009
 
 =cut
 
-our $VERSION = '0.00008';
+our $VERSION = '0.00009';
 
 
 =head1 SYNOPSIS
@@ -795,12 +795,16 @@ our $VERSION = '0.00008';
     startVirtualMachine("id=$id")
     stopVirtualMachine("id=$id")
 
+
+For other command,you can use as followings,
+$api->some_command("parm1=$parm1&parm2=$parm2")
+
 Please refer B<API Reference> in following B<Developer's Guide:CloudStack>.
 
 
 =head1 AUTHOR
 
-Shugo Numano, C<< <numano at cc.rim.or.jp> >>
+Shugo Numano, C<< <snumano at cpan.org> >>
 
 @shugonumano
 
