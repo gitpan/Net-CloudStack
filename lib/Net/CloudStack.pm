@@ -757,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00011
+Version 0.00012
 
 =cut
 
-our $VERSION = '0.00011';
+our $VERSION = '0.00012';
 
 
 =head1 SYNOPSIS
@@ -772,8 +772,10 @@ our $VERSION = '0.00011';
         api_path        => 'client/api?',
         api_key         => '<your api key>',
         secret_key      => '<your secret key>',
-        xml_json        => 'json', #json or xml.xml is default.
-        send_request    => 'yes',  #yes or no.When you input yes,you can get json or xml as response.
+        xml_json        => 'json', #response format.you can select json or xml. xml is default.
+        send_request    => 'yes',  #yes or no.
+                                   #When you select yes,you can get response.
+                                   #If you don't want to get response(only generating url),please input no. 
     );
 
     # CloudStack API Methods
@@ -793,21 +795,44 @@ This module supports all CloudStack commands,basically you can use methods as fo
 $api->some_command("parm1=$parm1&parm2=$parm2")
 
 Please refer B<API Reference> in following B<Developer's Guide:CloudStack>.
+
 L<http://docs.cloud.com/CloudStack_Documentation/Developer%27s_Guide%3A_CloudStack>
+
+Followings are some examples for API command,
 
 =head2 listVirtualMachines
 
-    listVirtualMachines()
-    listVirtualMachines("id=$id")
+    $api->listVirtualMachines()
+    $api->listVirtualMachines("id=$id")
 
 =head2 deployVirtualMachine
 
-    deployVirtualMachine("serviceoffeingid=$serviceoffeingid&templateid=$templateid&zoneid=$zoneid")
+    $api->deployVirtualMachine("serviceoffeingid=$serviceoffeingid&templateid=$templateid&zoneid=$zoneid")
 
 =head2 startVirtualMachine/stopVirtualMachine
 
-    startVirtualMachine("id=$id")
-    stopVirtualMachine("id=$id")
+    $api-> startVirtualMachine("id=$id")
+    $api->stopVirtualMachine("id=$id")
+
+Followings are some examples for original command,
+
+=head2 test
+
+    $api->test()
+
+This method prints each defined attributes(base_url,api_path,api_key,secret_key,send_request,xml_json) and options.
+
+=head2 url
+
+    $api->url()
+
+This method prints generated URL that is send to CloudStack API.
+
+=head2 test
+
+    $api->response()
+
+This method prints response from CloudStack API.
 
 =head1 AUTHOR
 
