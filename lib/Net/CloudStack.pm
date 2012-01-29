@@ -757,11 +757,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00009
+Version 0.00011
 
 =cut
 
-our $VERSION = '0.00009';
+our $VERSION = '0.00011';
 
 
 =head1 SYNOPSIS
@@ -772,14 +772,28 @@ our $VERSION = '0.00009';
         api_path        => 'client/api?',
         api_key         => '<your api key>',
         secret_key      => '<your secret key>',
-        xml_json        => 'json',    #json or xml.xml is default.
-        send_request    => 'yes',      #yes or no.When you input yes,you can get json or xml as response.
+        xml_json        => 'json', #json or xml.xml is default.
+        send_request    => 'yes',  #yes or no.When you input yes,you can get json or xml as response.
     );
-    $api->listVirtualMachines();
-    print $api->url;
-    print $api->response;
+
+    # CloudStack API Methods
+    $api->listVirtualMachines();         # no argument.
+    $api->listVirtualMachines("id=123"); # one argument.
+
+    $api->deployVirtualMachine("serviceofferingid=1&templateid=1&zoneid=1"); # use & for some arguments.
+
+    # Original Methods
+    print $api->url; # print generated url
+    print $api->response; # print API response
 
 =head1 METHODS
+
+This module supports all CloudStack commands,basically you can use methods as following,
+
+$api->some_command("parm1=$parm1&parm2=$parm2")
+
+Please refer B<API Reference> in following B<Developer's Guide:CloudStack>.
+L<http://docs.cloud.com/CloudStack_Documentation/Developer%27s_Guide%3A_CloudStack>
 
 =head2 listVirtualMachines
 
@@ -794,13 +808,6 @@ our $VERSION = '0.00009';
 
     startVirtualMachine("id=$id")
     stopVirtualMachine("id=$id")
-
-
-For other command,you can use as followings,
-$api->some_command("parm1=$parm1&parm2=$parm2")
-
-Please refer B<API Reference> in following B<Developer's Guide:CloudStack>.
-
 
 =head1 AUTHOR
 
