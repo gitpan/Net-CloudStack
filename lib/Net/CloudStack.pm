@@ -703,12 +703,13 @@ sub gen_url{
     my $query = "command=".$cmd."&apiKey=".$api_key;
     my @list = split(/&/,$query);
     foreach  (@list){
-        if(/(.+)\=(.+)/){
+        if(/(\w+)\=(\w.+)/){
             my $field = $1;
             my $value = $uri->encode($2, 1); # encode_reserved option is set to 1
             $_ = $field."=".$value;
         }
     }
+    my $output_tmp = join("&",sort @list);
 
 #step2
     foreach  (@list){
@@ -720,7 +721,7 @@ sub gen_url{
     my $digest = hmac_sha1($output, $secret_key);
     my $base64_encoded = encode_base64($digest);chomp($base64_encoded);
     my $url_encoded = $uri->encode($base64_encoded, 1); # encode_reserved option is set to 1
-    my $url = $base_url."/".$api_path."apikey=".$api_key."&command=".$cmd."&signature=".$url_encoded;
+    my $url = $base_url."/".$api_path.$output_tmp."&signature=".$url_encoded;
     $self->url("$url");
 }
 
@@ -757,11 +758,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00012
+Version 0.00013
 
 =cut
 
-our $VERSION = '0.00012';
+our $VERSION = '0.00013';
 
 
 =head1 SYNOPSIS
