@@ -1,5 +1,7 @@
 Revision history for Net-CloudStack
 
+0.00014  2012/02/14
+         Fixed bug in processing with SSH public key.
 0.00013  2012/02/07
          Fixed some bugs.
 0.00012  2012/01/29

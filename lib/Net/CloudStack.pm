@@ -666,6 +666,9 @@ sub proc{
         $opt = "";
     }
     else{
+	$opt =~ s/^(.+\=\=)\s+\S*?(\&.+)$/$1$2/; # for SSH Public Key
+        $opt =~ s/^(.+\=\=)\s+\S+$/$1/;          # for SSH Public Key
+
         $opt =~ s/([\=\&])\s+/$1/g;
         $opt =~ s/\s+([\=\&])/$1/g;
     }
@@ -758,11 +761,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.00013
+Version 0.00014
 
 =cut
 
-our $VERSION = '0.00013';
+our $VERSION = '0.00014';
 
 
 =head1 SYNOPSIS
