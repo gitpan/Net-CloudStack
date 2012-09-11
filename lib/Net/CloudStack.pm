@@ -170,7 +170,7 @@ sub gen_response{
     else{
 	#json
 	if($self->xml_json =~ /json/i){
-	    my $obj = from_json($ua_res->decoded_content);
+	    my $obj = from_json(encode('utf8',$ua_res->decoded_content));
 	    my $json = JSON->new->pretty(1)->encode($obj);
 	    $self->response("$json");
 	}
@@ -196,11 +196,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.01003
+Version 0.01004
 
 =cut
 
-our $VERSION = '0.01003';
+our $VERSION = '0.01004';
 
 
 =head1 SYNOPSIS
