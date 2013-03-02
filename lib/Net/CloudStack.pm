@@ -134,7 +134,7 @@ sub gen_url{
     my $query = "command=".$cmd."&apiKey=".$api_key;
     my @list = split(/&/,$query);
     foreach  (@list){
-        if(/(\w+)\=(\w.+)/){
+      if(/(\w+(?:\[\d+\]\.\w+)?)\=(\w.+)/){
             my $field = $1;
             my $value = $uri->encode($2, 1); # encode_reserved option is set to 1
             $_ = $field."=".$value;
@@ -196,11 +196,11 @@ Net::CloudStack - Bindings for the CloudStack API
 
 =head1 VERSION
 
-Version 0.01004
+Version 0.01005
 
 =cut
 
-our $VERSION = '0.01004';
+our $VERSION = '0.01005';
 
 
 =head1 SYNOPSIS
